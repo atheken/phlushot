@@ -15,72 +15,15 @@
 			width: auto;
 		}
 	</style>
-	<script>
-/*!
-  * domready (c) Dustin Diaz 2012 - License MIT
-  * https://github.com/ded/domready
-*/
-!function (name, definition) {
-  if (typeof module != 'undefined') module.exports = definition()
-  else if (typeof define == 'function' && typeof define.amd == 'object') define(definition)
-  else this[name] = definition()
-}('domready', function (ready) {
-
-  var fns = [], fn, f = false
-    , doc = document
-    , testEl = doc.documentElement
-    , hack = testEl.doScroll
-    , domContentLoaded = 'DOMContentLoaded'
-    , addEventListener = 'addEventListener'
-    , onreadystatechange = 'onreadystatechange'
-    , readyState = 'readyState'
-    , loadedRgx = hack ? /^loaded|^c/ : /^loaded|c/
-    , loaded = loadedRgx.test(doc[readyState])
-
-  function flush(f) {
-    loaded = 1
-    while (f = fns.shift()) f()
-  }
-
-  doc[addEventListener] && doc[addEventListener](domContentLoaded, fn = function () {
-    doc.removeEventListener(domContentLoaded, fn, f)
-    flush()
-  }, f)
-
-
-  hack && doc.attachEvent(onreadystatechange, fn = function () {
-    if (/^c/.test(doc[readyState])) {
-      doc.detachEvent(onreadystatechange, fn)
-      flush()
-    }
-  })
-
-  return (ready = hack ?
-    function (fn) {
-      self != top ?
-        loaded ? fn() : fns.push(fn) :
-        function () {
-          try {
-            testEl.doScroll('left')
-          } catch (e) {
-            return setTimeout(function() { ready(fn) }, 50)
-          }
-          fn()
-        }()
-    } :
-    function (fn) {
-      loaded ? fn() : fns.push(fn)
-    })
-});
-</script>
 </head>
 <body>
 	<div id="map">
 
 	</div>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/zepto/1.0/zepto.min.js"></script>
 	<script src="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.js"></script>
 	<script>
-		domready(function(){
+		$(function(){
 			"use strict";
 
 			var map = L.map('map').setView([39.9500, -75.1700], 13);
@@ -96,6 +39,9 @@
 				var c = position.coords;
 				var coords = [c.latitude, c.longitude];
 				map.setView(coords, 15);
+
+        var f = $.getJSON('/locations', {lat : coords[0], lon: coords[1]});
+        console.log(f);
 				new L.marker(coords).addTo(map);
 			};
 

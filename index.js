@@ -1,14 +1,13 @@
 var http = require('http');
 var express = require('express');
+require.extensions['.geojson'] = require.extensions['.json'];
+
+var locations = require('./open-data/flu-shot/city-of-philadelphia/locations.geojson');
 
 var app = express()
-	.use(function(req,res,next){
-		if(req.url === '/locations'){
-			res.json({light: "orange"});
-		}
-		else{
-			next();
-		}
+	.use(express.compress())
+	.get('/locations', function(req,res,next){
+		res.json(locations);
 	})
 	.use(express.static(__dirname + '/public'));
 
