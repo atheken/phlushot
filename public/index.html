@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.css">
+	<style type="text/css">
+		html, body{
+			padding: 0px;
+			margin: 0px;
+			height: 100%;
+			width: 100%;
+		}
+		#map{
+			min-height: 90%;
+			height: 100%;
+			width: auto;
+		}
+	</style>
+	<script>
+/*!
+  * domready (c) Dustin Diaz 2012 - License MIT
+  * https://github.com/ded/domready
+*/
+!function (name, definition) {
+  if (typeof module != 'undefined') module.exports = definition()
+  else if (typeof define == 'function' && typeof define.amd == 'object') define(definition)
+  else this[name] = definition()
+}('domready', function (ready) {
+
+  var fns = [], fn, f = false
+    , doc = document
+    , testEl = doc.documentElement
+    , hack = testEl.doScroll
+    , domContentLoaded = 'DOMContentLoaded'
+    , addEventListener = 'addEventListener'
+    , onreadystatechange = 'onreadystatechange'
+    , readyState = 'readyState'
+    , loadedRgx = hack ? /^loaded|^c/ : /^loaded|c/
+    , loaded = loadedRgx.test(doc[readyState])
+
+  function flush(f) {
+    loaded = 1
+    while (f = fns.shift()) f()
+  }
+
+  doc[addEventListener] && doc[addEventListener](domContentLoaded, fn = function () {
+    doc.removeEventListener(domContentLoaded, fn, f)
+    flush()
+  }, f)
+
+
+  hack && doc.attachEvent(onreadystatechange, fn = function () {
+    if (/^c/.test(doc[readyState])) {
+      doc.detachEvent(onreadystatechange, fn)
+      flush()
+    }
+  })
+
+  return (ready = hack ?
+    function (fn) {
+      self != top ?
+        loaded ? fn() : fns.push(fn) :
+        function () {
+          try {
+            testEl.doScroll('left')
+          } catch (e) {
+            return setTimeout(function() { ready(fn) }, 50)
+          }
+          fn()
+        }()
+    } :
+    function (fn) {
+      loaded ? fn() : fns.push(fn)
+    })
+});
+</script>
+</head>
+<body>
+	<div id="map">
+
+	</div>
+	<script src="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.js"></script>
+	<script>
+		domready(function(){
+			"use strict";
+
+			var map = L.map('map').setView([39.9500, -75.1700], 13);
+
+			L.tileLayer('http://{s}.tile.cloudmade.com/f7210b3965cb4109a0ae47a7d668d1e5/997/256/{z}/{x}/{y}.png', {
+    		attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors,'+
+    					'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © '+
+    					'<a href="http://cloudmade.com">CloudMade</a>',
+    			maxZoom: 18
+			}).addTo(map);
+
+			var showPosition = function(position){
+				var c = position.coords;
+				var coords = [c.latitude, c.longitude];
+				map.setView(coords, 15);
+				new L.marker(coords).addTo(map);
+			};
+
+			if (navigator.geolocation)
+			{
+			    navigator.geolocation.getCurrentPosition(showPosition);
+			}
+
+		});
+	</script>
+</body>
+</html>
