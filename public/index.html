@@ -3,6 +3,7 @@
 <head>
 	<link rel="stylesheet" type="text/css" href="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.css">
 	<style type="text/css">
+
 		html, body{
 			padding: 0px;
 			margin: 0px;
@@ -14,14 +15,32 @@
 			height: 100%;
 			width: auto;
 		}
-    .marker-current-location{
-      width: 20px;
-      height: 20px;
-      border-radius: 20px;
-      border: 2px solid white;
-      background-color: #ff641f;
-      box-shadow: 0px 0px 5px #ff641f;
+    @-webkit-keyframes glow {
+     0% {
+         box-shadow: 0px 0px 1px #168aff;
+         background-color: #7bbcfb;
+     }
+     50% {
+         box-shadow: 0px 0px 5px 0px #168aff;
+         background-color: #168aff;
+     }
+     100% {
+         background-color: #7bbcfb;
+         box-shadow: 0px 0px 1px #168aff;
+     }
     }
+    .marker-current-location {
+     width: 40px;
+     height: 40px;
+     border-radius: 40px;
+     border: 2px solid white;
+     background-color: #168aff;
+     box-shadow: 0px 0px 1px #168aff;
+     -webkit-animation-name: glow;
+     -webkit-animation-duration: 2s;
+     -webkit-animation-timing-function: ease-in-out;
+     -webkit-animation-iteration-count: infinite
+ }
 	</style>
 </head>
 <body>
@@ -31,12 +50,13 @@
   <script src="//cdnjs.cloudflare.com/ajax/libs/zepto/1.0/zepto.min.js"></script>
 	<script src="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.js"></script>
 	<script>
+    L_PREFER_CANVAS = true;
 		$(function(){
 			"use strict";
-
+      
 			var map = L.map('map').setView([39.9500, -75.1700], 13);
 
-			L.tileLayer('http://{s}.tile.cloudmade.com/f7210b3965cb4109a0ae47a7d668d1e5/997/256/{z}/{x}/{y}.png', {
+			L.tileLayer('http://{s}.tile.cloudmade.com/f7210b3965cb4109a0ae47a7d668d1e5/110685/256/{z}/{x}/{y}.png', {
     		attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors,'+
     					'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © '+
     					'<a href="http://cloudmade.com">CloudMade</a>',
@@ -75,7 +95,7 @@
 				map.setView(coords,15);
         var myIcon = L.divIcon({className: 'marker-current-location'});
         var marker = new L.marker(coords,{icon: myIcon});
-        marker.setPopupContent("Current Location");
+        marker.bindPopup("<span>Current Location</span>");
         marker.addTo(map);
         marker.openPopup();
       };
