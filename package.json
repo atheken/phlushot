@@ -2,7 +2,7 @@
   "name": "phlushot",
   "version": "0.0.0",
   "description": "A flushot locator for Philadelphia.",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
