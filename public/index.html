@@ -14,6 +14,14 @@
 			height: 100%;
 			width: auto;
 		}
+    .marker-current-location{
+      width: 20px;
+      height: 20px;
+      border-radius: 20px;
+      border: 2px solid white;
+      background-color: #ff641f;
+      box-shadow: 0px 0px 5px #ff641f;
+    }
 	</style>
 </head>
 <body>
@@ -35,15 +43,42 @@
     			maxZoom: 18
 			}).addTo(map);
 
+      var layer = null;
+
+      var retrieveLocations = function(){
+        $.getJSON('/locations', {bbox : map.getBounds().toBBoxString()},
+        function(data, status, xhr){
+          if(layer){
+            map.removeLayer(layer);
+            layer = null;
+          }
+            layer = L.geoJson(data, {
+              style: function (feature) {
+                  return {color: feature.properties.color};
+              },
+              onEachFeature: function (feature, layer) {
+                  layer.bindPopup(feature.properties.facility_name);
+              }
+          });
+          layer.addTo(map);
+        });
+      };
+
+      //listen for map moves, fire appropriate requests.
+      map.on('moveend', function(e){
+        retrieveLocations();
+      });
+
 			var showPosition = function(position){
 				var c = position.coords;
 				var coords = [c.latitude, c.longitude];
-				map.setView(coords, 15);
-
-        var f = $.getJSON('/locations', {lat : coords[0], lon: coords[1]});
-        console.log(f);
-				new L.marker(coords).addTo(map);
-			};
+				map.setView(coords,15);
+        var myIcon = L.divIcon({className: 'marker-current-location'});
+        var marker = new L.marker(coords,{icon: myIcon});
+        marker.setPopupContent("Current Location");
+        marker.addTo(map);
+        marker.openPopup();
+      };
 
 			if (navigator.geolocation)
 			{
