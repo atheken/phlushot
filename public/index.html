@@ -115,6 +115,7 @@
       padding: 8px;
       width: 75px;
       background: #2582db;
+      box-shadow: 0px 0px 1px #168aff;
       cursor: pointer;
     }
 
@@ -126,7 +127,7 @@
       font-size: 14px;
       background: #2582db;
       position: absolute;
-      box-shadow: 0px 0px 1px #168aff inset;
+      box-shadow: 0px 0px 1px #168aff;
       z-index: 100;
     }
     #filter.active .row{
@@ -172,7 +173,7 @@
       var layer = null;
       var currentLocation = null;
       var touchEnabled = false;
-      if('ontouchstart' in window){
+      if(window.ontouchstart){
         touchEnabled = true;
       }
 			var map = L.map('map', {
