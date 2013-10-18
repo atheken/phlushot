@@ -171,9 +171,12 @@
       var showZoomControl = true;
       var layer = null;
       var currentLocation = null;
-      
+      var touchEnabled = false;
+      if('ontouchstart' in window){
+        touchEnabled = true;
+      }
 			var map = L.map('map', {
-        zoomControl : ('ontouchstart' in window)
+        zoomControl : touchEnabled
       }).setView([39.9500, -75.1700], 13);
 
 			L.tileLayer('http://{s}.tile.cloudmade.com/f7210b3965cb4109a0ae47a7d668d1e5/110685/256/{z}/{x}/{y}.png', {
