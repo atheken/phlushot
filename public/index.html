@@ -21,7 +21,13 @@
       position: relative;
       z-index: 1;
       color: white;
-      height: 36px;
+      height: 34px;
+      font-family: 'Helvetica Nueu', Helvetica, Arial;
+      font-weight: lighter;
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
     }
 
     #map{
@@ -73,14 +79,7 @@
     table tr td{
       vertical-align: top;
     }
-    .row{
-      margin: 0px -5px;
-      padding: 8px 10px 0px 10px;
-      vertical-align: middle;
-      font-weight: light;
-      font-family: 'Helvetica Nueu', Helvetica, Arial;
-      font-size: 14px;
-    }
+
     input{
       outline: none;
       height: 14px;
@@ -90,6 +89,7 @@
       padding: 2px;
       margin: 0px;
       vertical-align: middle;
+      width: 150px;
     }
     input::-webkit-input-placeholder {
       font-style: italic;
@@ -106,16 +106,59 @@
       border-left: 0px;
       vertical-align: middle;
     }
+    #filter{
+      margin-left: 10px;
+      font-weight: lighter;
+    }
+
+    #filter .menu{
+      padding: 8px;
+      width: 75px;
+      background: #2582db;
+      cursor: pointer;
+    }
+
+    #filter .row{
+      display: none;
+      padding: 8px 10px 0px 10px;
+      vertical-align: middle;
+      font-family: 'Helvetica Nueu', Helvetica, Arial;
+      font-size: 14px;
+      background: #2582db;
+      position: absolute;
+      box-shadow: 0px 0px 1px #168aff inset;
+      z-index: 100;
+    }
+    #filter.active .row{
+      display: block;
+      width: 180px;
+      padding: 10px;
+      border-radius: 0 5px 5px 5px;
+    }
+    .info{
+      text-align: center;
+      clear:both;
+    }
 	</style>
 </head>
 <body>
   <div id="nav">
-      <div class="row">
-        Locate flu-shots
-        <span class="options"><input type="datetime" placeholder="Available Now" /><i class="icon-time prefix"></i></span>
-        near
-        <span class="options"><input type="text" placeholder="Current Location"/><i class="icon-location-arrow prefix"></i></span>
+      <div id="filter">
+        <div class="menu"><i class="icon-search"></i>&nbsp;Filter&nbsp;&nbsp;<i class="icon-angle-down"></i></div>
+        <div class="row">
+          <div class="info">
+            Filter available flu-shot locations:
+          </div>
+          <br/>
+          When:<br/>
+          <span class="options"><input type="date" placeholder="Available Now" /><i class="icon-time prefix"></i></span>
+          <br/>
+          <br/>
+          Where:<br/>
+          <span class="options"><input type="text" placeholder="Current Location"/><i class="icon-location-arrow prefix"></i></span>
       </div>
+      </div>
+    </div>
   </div>
 	<div id="map">
 	</div>
@@ -191,6 +234,10 @@
       }).resize();
 
       map.locate({ watch: true });
+
+      $('#filter .menu').click(function(){
+        $(this).parent().toggleClass('active');
+      });
       
     });
 	</script>
