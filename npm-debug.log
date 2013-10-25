@@ -1,0 +1,55 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'node', '/usr/local/bin/npm', 'install', 'momentjs', '--save' ]
+2 info using npm@1.3.11
+3 info using node@v0.10.20
+4 warn package.json phlushot@0.0.0 No repository field.
+5 verbose readDependencies using package.json deps
+6 verbose cache add [ 'momentjs', null ]
+7 verbose cache add name=undefined spec="momentjs" args=["momentjs",null]
+8 verbose parsed url { protocol: null,
+8 verbose parsed url   slashes: null,
+8 verbose parsed url   auth: null,
+8 verbose parsed url   host: null,
+8 verbose parsed url   port: null,
+8 verbose parsed url   hostname: null,
+8 verbose parsed url   hash: null,
+8 verbose parsed url   search: null,
+8 verbose parsed url   query: null,
+8 verbose parsed url   pathname: 'momentjs',
+8 verbose parsed url   path: 'momentjs',
+8 verbose parsed url   href: 'momentjs' }
+9 silly lockFile 6617700a-momentjs momentjs
+10 verbose lock momentjs /Users/atheken/.npm/6617700a-momentjs.lock
+11 silly lockFile 6617700a-momentjs momentjs
+12 silly lockFile 6617700a-momentjs momentjs
+13 verbose addNamed [ 'momentjs', '' ]
+14 verbose addNamed [ null, '*' ]
+15 silly lockFile 04d76c48-momentjs momentjs@
+16 verbose lock momentjs@ /Users/atheken/.npm/04d76c48-momentjs.lock
+17 silly addNameRange { name: 'momentjs', range: '*', hasData: false }
+18 verbose url raw momentjs
+19 verbose url resolving [ 'https://registry.npmjs.org/', './momentjs' ]
+20 verbose url resolved https://registry.npmjs.org/momentjs
+21 info trying registry request attempt 1 at 19:37:53
+22 http GET https://registry.npmjs.org/momentjs
+23 http 404 https://registry.npmjs.org/momentjs
+24 silly registry.get cb [ 404,
+24 silly registry.get   { server: 'CouchDB/1.3.1 (Erlang OTP/R15B03)',
+24 silly registry.get     date: 'Thu, 24 Oct 2013 23:37:53 GMT',
+24 silly registry.get     'content-type': 'application/json',
+24 silly registry.get     'content-length': '52',
+24 silly registry.get     'cache-control': 'must-revalidate' } ]
+25 silly lockFile 04d76c48-momentjs momentjs@
+26 silly lockFile 04d76c48-momentjs momentjs@
+27 error 404 'momentjs' is not in the npm registry.
+27 error 404 You should bug the author to publish it
+27 error 404
+27 error 404 Note that you can also install from a
+27 error 404 tarball, folder, or http url, or git url.
+28 error System Darwin 13.0.0
+29 error command "node" "/usr/local/bin/npm" "install" "momentjs" "--save"
+30 error cwd /Users/atheken/Code/phlushot
+31 error node -v v0.10.20
+32 error npm -v 1.3.11
+33 error code E404
+34 verbose exit [ 1, true ]

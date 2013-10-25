@@ -164,12 +164,11 @@
             Filter available flu-shot locations:
           </div>
           <br/>
-          When:<br/>
-          <span class="options"><input type="date" placeholder="Available Now" /><i class="icon-time prefix"></i></span>
+          From<br/>
+          <span class="options"><input type="date" id="start_date" /><i class="icon-time prefix"></i></span>
           <br/>
-          <br/>
-          Where:<br/>
-          <span class="options"><input type="text" placeholder="Current Location"/><i class="icon-location-arrow prefix"></i></span>
+          Until:<br/>
+          <span class="options"><input type="date" id="end_date" /><i class="icon-time prefix"></i></span>
       </div>
       </div>
     </div>
@@ -179,9 +178,26 @@
   <script src="//cdnjs.cloudflare.com/ajax/libs/zepto/1.0/zepto.min.js"></script>
 	<script src="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.js"></script>
 	<script>
+    var pad = function(value){
+        return value < 10 ? "0" + value : value;
+    }
+
     $(function(){
 			"use strict";
       
+      var now = new Date();
+      var month = now.getMonth() + 1;
+      var begin = pad(now.getFullYear()) + "-" + pad(now.getMonth()+1) + "-" + pad(now.getDate());
+
+      $('#start_date').val(begin);
+
+      var endDate = new Date(now.getTime() + (7 * 24 * 60 * 60 * 1000));
+      
+      var end = pad(endDate.getFullYear()) + "-" + pad(endDate.getMonth()+1) + "-" + pad(endDate.getDate());
+      
+      $('#end_date').val(end);
+
+
       var showZoomControl = true;
       var layer = null;
       var currentLocation = null;
@@ -201,7 +217,12 @@
 
       
       var retrieveLocations = function(){
-        $.getJSON('/locations', {bbox : map.getBounds().toBBoxString()},
+        $.getJSON('/locations', {
+          bbox : map.getBounds().toBBoxString(),
+          start_date : $('#start_date').val(),
+          end_date : $('#end_date').val()
+
+        },
         function(data, status, xhr){
           if(layer){
             map.removeLayer(layer);
@@ -218,12 +239,18 @@
                   layer.bindPopup("<table class='marker-details'><tr><td>"+ 
                     "<i class='icon-hospital popup-icon'></i></td><td><b>" + 
                     feature.properties.facility_name + "</b><br/>" + 
-                    feature.properties.street1 + "</td></tr></table>");
+                    feature.properties.street1 + "</td></tr><tr><td></td><td>Available from "+
+                    feature.properties.begin_date + " until "+
+                    feature.properties.end_date + "</td></tr></table>");
               }
           });
           layer.addTo(map);
         });
       };
+
+      $('input[type=date]').change(function(){
+        retrieveLocations();
+      });
 
       //listen for map moves, fire appropriate requests.
       map.on('moveend', function(e){
